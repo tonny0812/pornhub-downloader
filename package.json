@@ -1,0 +1,38 @@
+{
+  "name": "pornhub-downloader",
+  "version": "1.0.0",
+  "description": "download videos from pornhub.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "babel-node ./src --presets es2015,stage-3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackmatch/pornhub-downloader.git"
+  },
+  "keywords": [
+    "crawler",
+    "node",
+    "pornhub"
+  ],
+  "author": "blackmatch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blackmatch/pornhub-downloader/issues"
+  },
+  "homepage": "https://github.com/blackmatch/pornhub-downloader#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.1",
+    "lodash": "^4.17.4",
+    "mkdirp": "^0.5.1",
+    "moment": "^2.18.1",
+    "progress": "^2.0.0",
+    "superagent": "^3.5.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1"
+  }
+}
