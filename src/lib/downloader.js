@@ -1,18 +1,15 @@
 import http from 'http';
 import https from 'https';
 import fs from 'fs';
-import urlModule from 'url';
+import URL from 'url';
 import ProgressBar from 'progress';
 import mkdirp from 'mkdirp';
 import moment from 'moment';
 import { DOWNLOAD_DIR } from '../config';
 
-const URL = urlModule.URL;
-
 const getFileNameFromUrl = (url) => {
   let fileName;
-  let myUrl = new URL(url);
-  let pathName = myUrl.pathname;
+  let pathName = URL.parse(url).pathname;
   if (pathName.indexOf('/') !== -1 && pathName.split('/')
     && pathName.split('/').length >= 2) {
     let arr = pathName.split('/');

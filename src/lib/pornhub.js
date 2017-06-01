@@ -3,7 +3,7 @@ import cheerio from 'cheerio';
 import _ from 'lodash';
 
 exports.getInfos = function (query) {
-  const baseUrl = 'https://www.pornhub.com/video?page=';
+  const baseUrl = 'https://www.pornhub.com/video';
   const page = (query !== undefined && query.page > 0) ?
     query.page
     :
@@ -13,10 +13,13 @@ exports.getInfos = function (query) {
     query.word
     :
     '';
-  let url = `${baseUrl}${page}`;
+  let url = baseUrl;
   if (word.length > 0) {
-    url += `&search=${word}`;
+    url += `/search?search=${word}&page=${page}`;
+  } else {
+    url += `?page=${page}`;
   }
+  url = encodeURI(url);
   const pm = new Promise((resolve, reject) => {
     superagent.get(url).end((err, res) => {
       if (err) {

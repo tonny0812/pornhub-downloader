@@ -21,7 +21,7 @@ const task = async function () {
       }
     }
   } catch (error) {
-    console.log(erros);
+    console.log(erro);
   }
 };
 
