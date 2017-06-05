@@ -1,9 +1,11 @@
 # pornhub-downloader
-Download videos one by one from pornhub automatically.  
-![progress](./readme/progress.png)  
-![downloads](./readme/download1.png)   
-![downloads](./readme/download2.png)  
-![downloads](./readme/download3.png)
+Download videos from [pornhub](www.pornhub.com) one by one automatically.  
+![progress](./readme/downloading.png)  
+**PS**: As you see the picture above. It will skip empty file when downloading. And skip error, and then download next one. Also, you can setup timeout in a small value. Everything is for downloading more valid videos.  
+
+![downloads](./readme/files.png)   
+
+**PS**: You can watch the videos by simple "double click"! lol~~
 
 ## Usage
 1. clone this project.  
@@ -19,7 +21,8 @@ You can edit `src/config.js` to change settings.
 `START_PAGE`: the star page number, defaults to 1.  
 `PAGES`: how many pages do you want to download(20 videos/page)? defaults to 100.  
 `SEARCH`: keyword of searching.   
-`DOWNLOAD_DIR`: the folder to save videos. defaults to 'downloads/'.
+`DOWNLOAD_DIR`: the folder to save videos. defaults to 'downloads/'.  
+`TIMEOUT`: timeout value, defaults to 3 minutes.
 
 ## Download speed
 1. the speed depends on your network.

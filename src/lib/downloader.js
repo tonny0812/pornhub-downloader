@@ -6,7 +6,7 @@ import ProgressBar from 'progress';
 import mkdirp from 'mkdirp';
 // import moment from 'moment';
 import Logger from './logger';
-import { DOWNLOAD_DIR, LOG_MODE } from '../config';
+import { DOWNLOAD_DIR, LOG_MODE, TIMEOUT } from '../config';
 
 const log = new Logger({
   mode: LOG_MODE,
@@ -53,7 +53,10 @@ exports.downloadFromUrl = (url) => {
       path: URL.parse(url).path,
     };
 
-    const clientReq = client.get(reqOptions, (res) => {
+    client.get(reqOptions, (res) => {
+      if (TIMEOUT > 0) {
+        res.socket.setTimeout(TIMEOUT);
+      }
       if (!fileName) {
         fileName = getFileNameWithRes(res);
       }
@@ -64,6 +67,12 @@ exports.downloadFromUrl = (url) => {
       const dst = dir + fileName;
       const totalLength = parseInt(res.headers['content-length'], 10);
       if (totalLength > 0) {
+        res.socket.once('timeout', () => {
+          console.log('\n');
+          log.warn('timeout!!! download next one!');
+          fs.unlinkSync(dst); /* remove unfinished file */
+          resolve(true);
+        });
         const ws = fs.createWriteStream(dst);
         // progress bar
         const barStyle = '[:bar] :current/:total :percent '
@@ -88,18 +97,28 @@ exports.downloadFromUrl = (url) => {
           ws.end();
           resolve(true);
         });
+        // listening error event
+        res.on('error', (err) => {
+          console.log('\n');
+          log.warn('Throw an error! Download next one!');
+          log.error(err.message);
+          fs.unlinkSync(dst); /* remove unfinished file */
+          resolve(true);
+        });
       } else {
+        console.log('\n');
         log.warn(`skip empty file of url: ${url}`);
         resolve(true);
       }
     });
 
-    clientReq.on('error', (err) => {
-      log.warn('Throw an error! Download next one!');
-      log.error(err.message);
-      // reject(err);
-      resolve(true);
-    });
+    // clientReq.on('error', (err) => {
+    //   console.log('\n');
+    //   log.warn('Throw an error! Download next one!');
+    //   log.error(err.message);
+    //   // reject(err);
+    //   resolve(true);
+    // });
   });
 
   return pm;
