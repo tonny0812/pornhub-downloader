@@ -1,10 +1,15 @@
 import downloader from './lib/downloader.js';
 import pornhub from './lib/pornhub.js';
-import { START_PAGE, PAGES, SEARCH, DOWNLOAD_DIR } from './config';
+import { START_PAGE, PAGES, SEARCH, LOG_MODE } from './config';
+import Logger from './lib/logger';
+
+const log = new Logger({
+  mode: LOG_MODE,
+});
 
 const task = async function () {
   try {
-    let firstPage = START_PAGE;
+    const firstPage = START_PAGE;
     for (let i = firstPage; i <= (firstPage + PAGES); i++) {
       const query = {
         page: i,
@@ -14,14 +19,11 @@ const task = async function () {
       const keyInfos = await pornhub.getInfos(query);
       for (const info of keyInfos) {
         const videoUrl = await pornhub.getDownloadUrlFromKey(info.key);
-        const ok = await downloader.downloadFromUrl(videoUrl);
-        if (ok !== true) {
-          continue;
-        }
+        await downloader.downloadFromUrl(videoUrl);
       }
     }
-  } catch (error) {
-    console.log(erro);
+  } catch (err) {
+    log.error(err);
   }
 };
 
