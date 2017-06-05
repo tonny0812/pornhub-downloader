@@ -90,6 +90,7 @@ exports.downloadFromUrl = (url) => {
         });
       } else {
         log.warn(`skip empty file of url: ${url}`);
+        resolve(true);
       }
     });
 
