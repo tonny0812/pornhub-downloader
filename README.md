@@ -1,5 +1,5 @@
 # pornhub-downloader
-Download videos from [pornhub](www.pornhub.com) one by one automatically.  
+Download videos from [pornhub](https://www.pornhub.com) one by one automatically.  
 ![progress](./readme/downloading.png)  
 **PS**: As you see the picture above. It will skip empty file when downloading. And skip error, and then download next one. Also, you can setup timeout in a small value. Everything is for downloading more valid videos.  
 
