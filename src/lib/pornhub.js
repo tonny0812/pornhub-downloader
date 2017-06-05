@@ -1,6 +1,12 @@
 import superagent from 'superagent';
 import cheerio from 'cheerio';
 import _ from 'lodash';
+import Logger from './logger';
+import { LOG_MODE } from '../config';
+
+const log = new Logger({
+  mode: LOG_MODE,
+});
 
 exports.getInfos = function (query) {
   const baseUrl = 'https://www.pornhub.com/video';
@@ -26,15 +32,19 @@ exports.getInfos = function (query) {
         reject(err);
       }
       const $ = cheerio.load(res.text);
-      let infos = [];
+      const infos = [];
       $('.videoblock.videoBox').each((idx, element) => {
         const $element = $(element);
         const info = {
           title: $element.find('.img.videoPreviewBg').find('.img').attr('title'),
-          imgUrl: $element.find('.img.videoPreviewBg').find('.img').find('img').attr('src'),
-          key: element.attribs['_vkey'],
+          imgUrl: $element
+            .find('.img.videoPreviewBg')
+            .find('.img')
+            .find('img')
+            .attr('src'),
+          key: element.attribs["_vkey"],
         };
-        infos.push(info)
+        infos.push(info);
       });
       resolve(infos);
     });
@@ -43,8 +53,8 @@ exports.getInfos = function (query) {
 };
 
 const getBestQuality = (infoArr) => {
-  let qs = [];
-  let ins = [];
+  const qs = [];
+  const ins = [];
   for (const info of infoArr) {
     if (info.videoUrl.length > 0) {
       qs.push(info);
@@ -75,7 +85,10 @@ exports.getDownloadUrlFromKey = function (key) {
         const infoArr = JSON.parse(str);
         resolve(getBestQuality(infoArr));
       } catch (error) {
-        reject(error);
+        log.warn('Throw an error! Download next one!');
+        log.error(error.message);
+        // reject(error);
+        resolve('');
       }
     });
   });

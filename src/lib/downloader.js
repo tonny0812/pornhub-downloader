@@ -4,7 +4,7 @@ import fs from 'fs';
 import URL from 'url';
 import ProgressBar from 'progress';
 import mkdirp from 'mkdirp';
-import moment from 'moment';
+// import moment from 'moment';
 import Logger from './logger';
 import { DOWNLOAD_DIR, LOG_MODE } from '../config';
 
@@ -57,8 +57,9 @@ exports.downloadFromUrl = (url) => {
       if (!fileName) {
         fileName = getFileNameWithRes(res);
       }
-      const now = moment((new Date())).format('YYYYMMDDHHmmss');
-      const dir = `${DOWNLOAD_DIR}${now}/`;
+      // const now = moment((new Date())).format('YYYYMMDDHHmmss');
+      // const dir = `${DOWNLOAD_DIR}${now}/`;
+      const dir = `${DOWNLOAD_DIR}`;
       checkDir(dir);
       const dst = dir + fileName;
       const totalLength = parseInt(res.headers['content-length'], 10);

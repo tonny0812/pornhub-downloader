@@ -19,7 +19,9 @@ const task = async function () {
       const keyInfos = await pornhub.getInfos(query);
       for (const info of keyInfos) {
         const videoUrl = await pornhub.getDownloadUrlFromKey(info.key);
-        await downloader.downloadFromUrl(videoUrl);
+        if (videoUrl.length > 0) {
+          await downloader.downloadFromUrl(videoUrl);
+        }
       }
     }
   } catch (err) {
