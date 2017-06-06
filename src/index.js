@@ -17,10 +17,12 @@ const task = async function () {
       };
       /* get current page key info */
       const keyInfos = await pornhub.getInfos(query);
-      for (const info of keyInfos) {
-        const videoUrl = await pornhub.getDownloadUrlFromKey(info.key);
-        if (videoUrl.length > 0) {
-          await downloader.downloadFromUrl(videoUrl);
+      if (keyInfos.length > 0) {
+        for (const info of keyInfos) {
+          const videoUrl = await pornhub.getDownloadUrlFromKey(info.key);
+          if (videoUrl.length > 0) {
+            await downloader.downloadFromUrl(videoUrl);
+          }
         }
       }
     }

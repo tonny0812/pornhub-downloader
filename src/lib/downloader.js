@@ -4,7 +4,7 @@ import fs from 'fs';
 import URL from 'url';
 import ProgressBar from 'progress';
 import mkdirp from 'mkdirp';
-// import moment from 'moment';
+import moment from 'moment';
 import Logger from './logger';
 import { DOWNLOAD_DIR, LOG_MODE, TIMEOUT } from '../config';
 
@@ -24,13 +24,10 @@ const getFileNameFromUrl = (url) => {
     }
   }
 
+  if (!fileName) {
+    fileName = `${moment((new Date())).format('YYYYMMDDHHmmss')}.mp4`;
+  }
   return fileName;
-};
-
-const getFileNameWithRes = (res) => {
-  const arr = res.headers['content-type'].split('/');
-  const ext = arr[arr.length - 1];
-  return `${(new Date()).getTime()}.${ext}`;
 };
 
 const checkDir = (dir) => {
@@ -41,30 +38,27 @@ const checkDir = (dir) => {
 };
 
 exports.downloadFromUrl = (url) => {
-  let fileName = getFileNameFromUrl(url);
+  const fileName = getFileNameFromUrl(url);
   const preStr = url.slice(0, 5);
   const client = preStr === 'https' ?
     https
     :
     http;
   const pm = new Promise((resolve, reject) => {
+    checkDir(DOWNLOAD_DIR);
+    const dst = `${DOWNLOAD_DIR}${fileName}`;
+    if (fs.existsSync(dst)) {
+      log.debug('file has been downloaded, download next one!');
+      resolve(true);
+    }
     const reqOptions = {
       host: URL.parse(url).host,
       path: URL.parse(url).path,
     };
-
-    client.get(reqOptions, (res) => {
+    const clientReq = client.get(reqOptions, (res) => {
       if (TIMEOUT > 0) {
         res.socket.setTimeout(TIMEOUT);
       }
-      if (!fileName) {
-        fileName = getFileNameWithRes(res);
-      }
-      // const now = moment((new Date())).format('YYYYMMDDHHmmss');
-      // const dir = `${DOWNLOAD_DIR}${now}/`;
-      const dir = `${DOWNLOAD_DIR}`;
-      checkDir(dir);
-      const dst = dir + fileName;
       const totalLength = parseInt(res.headers['content-length'], 10);
       if (totalLength > 0) {
         res.socket.once('timeout', () => {
@@ -97,28 +91,22 @@ exports.downloadFromUrl = (url) => {
           ws.end();
           resolve(true);
         });
-        // listening error event
-        res.on('error', (err) => {
-          console.log('\n');
-          log.warn('Throw an error! Download next one!');
-          log.error(err.message);
-          fs.unlinkSync(dst); /* remove unfinished file */
-          resolve(true);
-        });
       } else {
         console.log('\n');
-        log.warn(`skip empty file of url: ${url}`);
+        log.warn(`skip empty file: ${fileName}`);
         resolve(true);
       }
     });
 
-    // clientReq.on('error', (err) => {
-    //   console.log('\n');
-    //   log.warn('Throw an error! Download next one!');
-    //   log.error(err.message);
-    //   // reject(err);
-    //   resolve(true);
-    // });
+    clientReq.on('error', (err) => {
+      console.log('\n');
+      log.warn('timeout!!! download next one!');
+      log.error(err.message);
+      if (fs.existsSync(dst)) {
+        fs.unlinkSync(dst); /* remove unfinished file */
+      }
+      resolve(true);
+    });
   });
 
   return pm;
