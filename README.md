@@ -1,4 +1,5 @@
 # pornhub-downloader
+[以中文查看](./README_ZH.md)  
 Download videos from [pornhub](https://www.pornhub.com) one by one automatically.  
 ![progress](./readme/downloading.png)  
 **PS**: As you see the picture above. It will skip empty file when downloading. And skip error, and then download next one. Also, you can setup timeout in a small value. Everything is for downloading more valid videos.  
@@ -14,7 +15,7 @@ Download videos from [pornhub](https://www.pornhub.com) one by one automatically
 4. run `npm start`  
 5. waiting and then enjoy!(videos will be downloaded on the `downloads/` folder)  
 
-note: This is a node.js project, so you have to install [node.js](https://nodejs.org/en/) on your operating system before you run above commands.
+Note: This is a node.js project, so you have to install [node.js](https://nodejs.org/en/) on your operating system before you run above commands.
 
 ## Config
 You can edit `src/config.js` to change settings.  
@@ -31,3 +32,9 @@ You can edit `src/config.js` to change settings.
 ## TODO
 1. <del>search by keyword.</del>  
 2. muti-tasks, download serveral videos async.
+
+## Why
+Someone may be interested in why I do this. My answer is: I love coding, I believe I can fetch download information from pornhub, and then download videos by the information. So I do it. It's just for fun about coding.
+
+## LICENCE
+MIT
