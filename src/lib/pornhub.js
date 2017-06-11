@@ -36,26 +36,34 @@ exports.getInfos = function (query) {
       .end((err, res) => {
         if (err) {
           // reject(err);
+          console.log('\n');
           log.warn('throw an error! download next page!');
           log.error(err.message);
           resolve([]);
         }
-        const $ = cheerio.load(res.text);
-        const infos = [];
-        $('.videoblock.videoBox').each((idx, element) => {
-          const $element = $(element);
-          const info = {
-            title: $element.find('.img.videoPreviewBg').find('.img').attr('title'),
-            imgUrl: $element
-              .find('.img.videoPreviewBg')
-              .find('.img')
-              .find('img')
-              .attr('src'),
-            key: element.attribs["_vkey"],
-          };
-          infos.push(info);
-        });
-        resolve(infos);
+        try {
+          const $ = cheerio.load(res.text);
+          const infos = [];
+          $('.videoblock.videoBox').each((idx, element) => {
+            const $element = $(element);
+            const info = {
+              title: $element.find('.img.videoPreviewBg').find('.img').attr('title'),
+              imgUrl: $element
+                .find('.img.videoPreviewBg')
+                .find('.img')
+                .find('img')
+                .attr('src'),
+              key: element.attribs["_vkey"],
+            };
+            infos.push(info);
+          });
+          resolve(infos);
+        } catch (error) {
+          console.log('\n');
+          log.warn('throw an error! download next page!');
+          log.error(error.message);
+          resolve([]);
+        }
       });
   });
   return pm;

@@ -48,8 +48,10 @@ exports.downloadFromUrl = (url) => {
     checkDir(DOWNLOAD_DIR);
     const dst = `${DOWNLOAD_DIR}${fileName}`;
     if (fs.existsSync(dst)) {
+      console.log('\n');
       log.debug('file has been downloaded, download next one!');
       resolve(true);
+      return;
     }
     const reqOptions = {
       host: URL.parse(url).host,
