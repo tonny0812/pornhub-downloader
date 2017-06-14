@@ -11,7 +11,7 @@ Download videos from [pornhub](https://www.pornhub.com) one by one automatically
 ## Usage
 1. clone this project.  
 2. go to the directory on the terminal.  
-3. run `nmp install`  
+3. run `npm install`  
 4. run `npm start`  
 5. waiting and then enjoy!(videos will be downloaded on the `downloads/` folder)  
 

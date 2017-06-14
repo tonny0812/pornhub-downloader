@@ -11,7 +11,7 @@
 ## 用法
 1. 克隆本仓库  
 2. 切换到仓库目录  
-3. 执行 `nmp install`  
+3. 执行 `npm install`  
 4. 执行 `npm start`  
 5. 抽根烟慢慢等吧!(所有视频会下载在 `downloads/` 文件夹)  
 
