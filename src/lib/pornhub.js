@@ -40,6 +40,7 @@ exports.getInfos = function (query) {
           log.warn('throw an error! download next page!');
           log.error(err.message);
           resolve([]);
+          return;
         }
         try {
           const $ = cheerio.load(res.text);
@@ -102,9 +103,11 @@ exports.getDownloadUrlFromKey = function (key) {
       .end((err, res) => {
         if (err) {
           // reject(err);
+          console.log('\n');
           log.warn('throw an error! download next page!');
           log.error(err.message);
           resolve('');
+          return;
         }
         const startIndex = res.text.indexOf('mediaDefinitions');
         const endIndex = res.text.indexOf('video_unavailable_country');

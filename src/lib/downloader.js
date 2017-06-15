@@ -74,6 +74,7 @@ exports.downloadFromUrl = (url) => {
         const barStyle = '[:bar] :current/:total :percent '
           + ':rate/bps :elapsed';
         log.debug(`dowloading ${dst}`);
+        console.log('\n');
         console.log();
         const bar = new ProgressBar(barStyle, {
           complete: '=',
