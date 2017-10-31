@@ -1,34 +1,39 @@
-import downloader from './lib/downloader.js';
-import pornhub from './lib/pornhub.js';
-import { START_PAGE, PAGES, SEARCH, LOG_MODE } from './config';
-import Logger from './lib/logger';
+const scrapy = require('./lib/scrapy');
+const config = require('./config.json');
+const log = require('./lib/log');
 
-const log = new Logger({
-  mode: LOG_MODE,
-});
+let page = config.page || 1;
+let search = config.search;
 
-const task = async function () {
+const scrapyTaskRun = async () => {
   try {
-    const firstPage = START_PAGE;
-    for (let i = firstPage; i <= (firstPage + PAGES); i++) {
-      const query = {
-        page: i,
-        word: SEARCH,
-      };
-      /* get current page key info */
-      const keyInfos = await pornhub.getInfos(query);
-      if (keyInfos.length > 0) {
-        for (const info of keyInfos) {
-          const videoUrl = await pornhub.getDownloadUrlFromKey(info.key);
-          if (videoUrl.length > 0) {
-            await downloader.downloadFromUrl(videoUrl);
+    while (true) {
+      const items = await scrapy.fetchListPage({
+        page,
+        search
+      });
+      page++;
+      if (items.length > 0) {
+        for (const item of items) {
+          const ditem = await scrapy.fetchDownloadInfo(item.key);
+          if (ditem) {
+            ditem.title = item.title;
+            const result = await scrapy.downloadVideo(ditem);
+            log.info(result);
+            console.log('\n');
+          } else {
+            continue;
           }
         }
+      } else {
+        log.error('can\'t get anything from the web page!');
+        process.exit(0);
       }
     }
-  } catch (err) {
-    log.error(err);
+  } catch (error) {
+    log.error(error.message);
+    process.exit(0);
   }
 };
 
-task();
+scrapyTaskRun();
