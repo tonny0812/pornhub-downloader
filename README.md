@@ -1,12 +1,16 @@
 # pornhub-downloader
 
-Download highest quality videos from [pornhub](pornhub.com).
+Download highest quality videos from [pornhub](https://pornhub.com).
+
+**Version 2.0 is coming now!**
 
 ## Features
 
 * Support proxy setting.
 
 * Always choose highest quality video to download(720P usually).
+
+* Support keyword searching.
 
 * Show progress bar and download speed.
 
@@ -18,7 +22,7 @@ Download highest quality videos from [pornhub](pornhub.com).
 
 * Node.js 7.6.0+.
 
-* Your network can access [pornhub.com](pornhub.com).
+* Your network can access [pornhub.com](https://pornhub.com).
 
 ## Usage
 
@@ -32,8 +36,8 @@ Download highest quality videos from [pornhub](pornhub.com).
 
 You can config some params on `src/config.json`.
 
-`proxyUrl`: set up the proxy with port. For example: `http://127.0.0.1:1087`. If you don't need to set up proxy,
-just keep it empty string.
+`proxyUrl`: set up the proxy with port. For example: `http://127.0.0.1:1087`.
+If you don't need to set up proxy,just keep it empty string.
 
 `timeout`: set up request timeout.
 
@@ -52,6 +56,10 @@ just keep it empty string.
 ![running](./imgs/running.png)
 
 ![files](./imgs/files.png)
+
+## Download speed
+
+The speed depends on your local network or proxy.
 
 ## LICENCE
 
