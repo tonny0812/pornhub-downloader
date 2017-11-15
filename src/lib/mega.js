@@ -63,6 +63,7 @@ function upload(filepath, target) {
           })
         })
     });
+    return pm;
 }
 
 // upload('/usr/local/src/novnc-noVNC-v0.6.1-424-gedb7879.tar.gz');
