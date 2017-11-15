@@ -1,6 +1,7 @@
 const scrapy = require('./lib/scrapy');
 const config = require('./config.json');
 const log = require('./lib/log');
+const mega = require('./lib/mega')
 
 let page = config.page || 1;
 let search = config.search;
@@ -20,6 +21,7 @@ const scrapyTaskRun = async () => {
             ditem.title = item.title;
             const result = await scrapy.downloadVideo(ditem);
             log.info(result);
+            await mega.upload(result)
             console.log('\n');
           } else {
             continue;
