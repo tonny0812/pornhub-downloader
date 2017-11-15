@@ -2,7 +2,6 @@ var fs = require('fs');
 var path = require('path');
 var mega = require('mega');
 var ProgressBar = require('progress');
-var config = require('../config.json');
 
 var session = {
     email: "992658560@qq.com",
@@ -19,10 +18,9 @@ function mkdir(name, target) {
     })
 }
 
-function upload(name, target) {
+function upload(filepath, target) {
     var pm = new Promise(function(resolve, reject) {
         var storage = mega(session);
-        var filepath = config.downloadDir + '/' + name;
         var up = storage.upload({
             name: path.basename(filepath),
             // target: target,

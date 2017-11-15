@@ -141,7 +141,7 @@ const downloadVideo = (ditem) => {
 
   const pm = new Promise((resolve, reject) => {
     if (fse.existsSync(dst)) {
-      return resolve(`${dst} already exists!`);
+      return resolve(`${dst}`);
     }
     let opts = {
       url: ditem.videoUrl
@@ -157,7 +157,7 @@ const downloadVideo = (ditem) => {
       })
       .on('end', () => {
         bar.done();
-        return resolve(`${dst} has been downloaded!`);
+        return resolve(`${dst}`);
       })
       .pipe(fse.createWriteStream(dst))
       .on('error', err => {
