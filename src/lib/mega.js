@@ -22,7 +22,7 @@ function mkdir(name, target) {
 function upload(name, target) {
     var pm = new Promise(function(resolve, reject) {
         var storage = mega(session);
-        var filepath = config.downloadDir + name;
+        var filepath = config.downloadDir + '/' + name;
         var up = storage.upload({
             name: path.basename(filepath),
             // target: target,
