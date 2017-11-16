@@ -30,14 +30,14 @@ function upload(filepath, target) {
         function(err, file) {
             if (err) {
               deleteFile(filepath);
-              return reject(err);
+              return resolve('error');
             }
             console.log('\nUploaded', file.name, file.size + 'B')
             
             file.link(function(err, link) {
               if (err) {
                 deleteFile(filepath);
-                return reject(err);
+                return resolve('error');
               }
               console.log('Download from:', link)
             })
