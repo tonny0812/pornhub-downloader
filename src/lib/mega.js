@@ -29,12 +29,14 @@ function upload(filepath, target) {
           // fs.readFileSync(filepath),
         function(err, file) {
             if (err) {
+              deleteFile(filepath);
               return reject(err);
             }
             console.log('\nUploaded', file.name, file.size + 'B')
             
             file.link(function(err, link) {
               if (err) {
+                deleteFile(filepath);
                 return reject(err);
               }
               console.log('Download from:', link)
@@ -53,19 +55,23 @@ function upload(filepath, target) {
         })
         up.on('complete', function() {
           bar.tick();
-          fs.unlink(filepath,function (err) {
-              if(err) {
-                console.log(err);
-              } else {
-                console.log('delete '+ filepath + ' success!')
-              }
-              return resolve('done');
-          })
+          deleteFile(filepath);
+          return resolve('done');
         })
     });
     return pm;
 }
 
+function deleteFile(filepath) {
+  fs.unlink(filepath,function (err) {
+      if(err) {
+        console.log(err);
+      } else {
+        console.log('delete ##--'+ filepath + '--## success!')
+      }
+    
+  })
+}
 // upload('/usr/local/src/novnc-noVNC-v0.6.1-424-gedb7879.tar.gz');
 
 module.exports = {
