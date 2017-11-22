@@ -144,7 +144,8 @@ const downloadVideo = (ditem) => {
       return resolve(`${dst}`);
     }
     let opts = {
-      url: ditem.videoUrl
+      url: ditem.videoUrl,
+      timeout:0
     };
     Object.assign(opts, baseReqOpts);
     log.verbose(`downloading > ${filename}`);
